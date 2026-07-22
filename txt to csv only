@@ -1,0 +1,50 @@
+import csv
+
+# ============================================================
+# Convert TXT/CSV (3 columns) to CSV with headers: w, n, k
+# ============================================================
+
+def txt_to_csv(input_path, output_path):
+
+    with open(input_path, "r") as fin, open(output_path, "w", newline="") as fout:
+
+        writer = csv.writer(fout)
+        writer.writerow(["w", "n", "k"])   # Add column headers
+
+        for line in fin:
+
+            line = line.strip()
+
+            if not line:
+                continue
+
+            # Replace commas with spaces so both CSV and TXT work
+            vals = line.replace(",", " ").split()
+
+            if len(vals) < 3:
+                continue
+
+            try:
+                float(vals[0])
+                float(vals[1])
+                float(vals[2])
+            except ValueError:
+                continue
+
+            writer.writerow([vals[0], vals[1], vals[2]])
+
+    print("Done!")
+    print("Saved to:", output_path)
+
+
+# ============================================================
+# Main
+# ============================================================
+
+if __name__ == "__main__":
+
+    input_path = r"C:\Users\91912\OneDrive\Desktop\my programs\Csv+n+k\tio2\tio2txt.txt"
+
+    output_path = r"C:\Users\91912\OneDrive\Desktop\my programs\Csv+n+k\tio2\tio2_original.csv"
+
+    txt_to_csv(input_path, output_path)

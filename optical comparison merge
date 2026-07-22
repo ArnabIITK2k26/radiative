@@ -1,0 +1,113 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# ============================================================
+# File paths
+# ============================================================
+
+interp_file = r"C:\Users\91912\OneDrive\Desktop\my programs\Csv+n+k\tio2\tio2_result.csv"
+real_file   = r"C:\Users\91912\OneDrive\Desktop\my programs\Csv+n+k\tio2\tio2_original.csv"
+
+# ============================================================
+# Read files
+# ============================================================
+
+interp = pd.read_csv(interp_file)
+real = pd.read_csv(real_file)
+
+# ============================================================
+# Matplotlib style
+# ============================================================
+
+plt.style.use('default')
+
+# ============================================================
+# Plot n
+# ============================================================
+
+fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
+
+# Plot red circles FIRST
+ax.scatter(
+    real["w"],
+    real["n"],
+    color="red",
+    marker="o",
+    s=36,
+    linewidth=0,
+    label="Real n",
+    zorder=2
+)
+
+# Plot blue line AFTER so it stays on top
+ax.plot(
+    interp["w"],
+    interp["n"],
+    color="#0B3D91",
+    linewidth=2.5,
+    label="Interpolated n",
+    zorder=5
+)
+
+ax.set_title("Comparison of Refractive Index", fontsize=20)
+ax.set_xlabel("Wavelength (µm)", fontsize=15)
+ax.set_ylabel("Refractive Index (n)", fontsize=15)
+
+ax.grid(True, color="#b0b0b0", linewidth=1)
+
+# Legend order: blue then red
+handles, labels = ax.get_legend_handles_labels()
+order = [1, 0]
+ax.legend([handles[i] for i in order],
+          [labels[i] for i in order],
+          loc="upper right",
+          fontsize=13)
+
+ax.tick_params(labelsize=13)
+
+plt.tight_layout()
+
+# ============================================================
+# Plot k
+# ============================================================
+
+fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
+
+ax.scatter(
+    real["w"],
+    real["k"],
+    color="red",
+    marker="o",
+    s=36,
+    linewidth=0,
+    label="Real k",
+    zorder=2
+)
+
+ax.plot(
+    interp["w"],
+    interp["k"],
+    color="#0B3D91",
+    linewidth=2.5,
+    label="Interpolated k",
+    zorder=5
+)
+
+ax.set_title("Comparison of Extinction Coefficient", fontsize=20)
+ax.set_xlabel("Wavelength (µm)", fontsize=15)
+ax.set_ylabel("Extinction Coefficient (k)", fontsize=15)
+
+ax.grid(True, color="#b0b0b0", linewidth=1)
+
+handles, labels = ax.get_legend_handles_labels()
+order = [1, 0]
+ax.legend([handles[i] for i in order],
+          [labels[i] for i in order],
+          loc="upper left",
+          fontsize=13)
+
+ax.tick_params(labelsize=13)
+
+plt.tight_layout()
+
+plt.show()

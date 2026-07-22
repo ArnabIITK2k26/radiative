@@ -1,0 +1,66 @@
+#this convert the txt file to csv file with 3 decimal places for wavelength and 
+# 15 decimal places for n and k values. It also removes duplicate wavelengths, keeping the last occurrence.
+
+import pandas as pd
+
+# ============================================================
+# Input and Output Files
+# ============================================================
+
+input_file = r"C:\Users\91912\OneDrive\Desktop\my programs\Csv+n+k\tio2\tio2txt.txt"
+output_file = r"C:\Users\91912\OneDrive\Desktop\my programs\Csv+n+k\tio2\tio2_result.csv"
+
+# ============================================================
+# Read the text file
+# ============================================================
+
+df = pd.read_csv(
+    input_file,
+    sep=r"\s+",
+    engine="python",
+    names=["w", "n", "k"],
+    comment="#",
+    header=None
+)
+
+# ============================================================
+# Convert to numeric
+# ============================================================
+
+df["w"] = pd.to_numeric(df["w"], errors="coerce")
+df["n"] = pd.to_numeric(df["n"], errors="coerce")
+df["k"] = pd.to_numeric(df["k"], errors="coerce")
+
+# Remove invalid rows
+df = df.dropna()
+
+# ============================================================
+# Round wavelength
+# ============================================================
+
+df["w"] = df["w"].round(3)
+
+# ============================================================
+# Sort and remove duplicate wavelengths
+# ============================================================
+
+df = df.sort_values("w")
+df = df.drop_duplicates(subset="w", keep="last")
+
+# ============================================================
+# Save CSV without scientific notation
+# ============================================================
+
+with open(output_file, "w", newline="") as f:
+
+    f.write("w,n,k\n")
+
+    for _, row in df.iterrows():
+        f.write(
+            f"{row['w']:.3f},"
+            f"{row['n']:.15f},"
+            f"{row['k']:.15f}\n"
+        )
+
+print("Conversion completed successfully!")
+print("CSV saved at:", output_file)

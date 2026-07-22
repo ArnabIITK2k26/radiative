@@ -1,0 +1,43 @@
+#this code individually plots the n and k values from a CSV file. It uses matplotlib to create 
+# a line plot for both n and k against wavelength (w). The plot includes labels, a title, a grid, 
+# and a legend for clarity.
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# ============================================================
+# Path to CSV file
+# ============================================================
+
+csv_file = r"C:\Users\91912\OneDrive\Desktop\my programs\Csv+n+k\tio2\tio2_result.csv"
+
+# ============================================================
+# Read CSV
+# ============================================================
+
+df = pd.read_csv(csv_file)
+
+# Extract columns
+w = df["w"]
+n = df["n"]
+k = df["k"]
+
+# ============================================================
+# Plot
+# ============================================================
+
+plt.figure(figsize=(8, 5))
+
+plt.plot(w, n, label='n (Refractive Index)', linewidth=2)
+plt.plot(w, k, label='k (Extinction Coefficient)', linewidth=2)
+
+plt.xlabel("Wavelength (nm)", fontsize=12)
+plt.ylabel("Optical Constant", fontsize=12)
+plt.title("Optical Constants vs Wavelength", fontsize=14)
+
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.show()
